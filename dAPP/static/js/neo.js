@@ -293,7 +293,7 @@ function PollRunner (policy) {
     let intervalUtil = new IntervalUtil(policy.options);
     let _isPaused = false;
     let _isPolling = false;
-    
+
     this.isPolling = isPolling;
     this.addRequest = addRequest;
     this.pause = pause;
@@ -2069,7 +2069,7 @@ function AxiosClient (){
         options = filterKeys(options, ['method', 'url', 'params', 'body', 'data', 'cache', 'headers']);
 
         options.headers = {};
-        
+
         options.headers['Accept'] = 'application/json';
         options.headers['Content-Type'] = 'application/json';
 
