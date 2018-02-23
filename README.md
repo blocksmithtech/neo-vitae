@@ -37,10 +37,20 @@ For the `dApp`, the [neo-api-js](https://github.com/CityOfZion/neo-api-js) libra
 
 **Step4** - Invoke the contract. There are 2 operations `certify` and `get` that should be invoked this way:
 
-> neo> testinvoke 2767b5977e7b27cce462feedc4c3d9d606c15473 certify ["{wallet_to_certify}","{data_about_the_certification}"]
+> neo> testinvoke {contract_hash_here} certify ["{wallet_to_certify}","{data_about_the_certification}"]
 
 and 
 
-> neo> testinvoke 2767b5977e7b27cce462feedc4c3d9d606c15473 get ["{about_wallet}"] 
+> neo> testinvoke {contract_hash_here} get ["{about_wallet}"] 
 
 The `get` is used to find information about a given wallet/entity. The `certify` operation should be invoked by any organization/entity that wants to publicly declare that another entity has achieved/done something.
+
+
+# How to deploy and use the dApps
+
+More information Later
+
+
+# More information
+
+During the development of this project, we found many "gotchas" like things lack of the documentation, information spread in to many places, things that worked differently than it was expected, etc. We summarized some of the in a blog post. You can find it [here]().
