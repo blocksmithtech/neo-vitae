@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <meta charset="utf-8" /> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <link href="static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap.min.css">
   <link href="static/css/vitae.css" rel="stylesheet">
@@ -22,7 +23,24 @@
       </div>
       <button type="submit" class="btn btn-primary mb-2">Search</button>
     </form>
-    <div class="row">
+    <div id="user-info">
+      <h3>Lucas Lobosque</h3>
+      <p>1 Entry found</p>
+    </div>
+    <div id ="entries" class="row">
+      <dl class="row entry col-sm-8">
+        <dt class="col-sm-3">College Name</dt>
+        <dd class="col-sm-9">University of São Paulo</dd>
+
+        <dt class="col-sm-3">Degree Type</dt>
+        <dd class="col-sm-9">Bacharel</dd>
+
+        <dt class="col-sm-3">Year</dt>
+        <dd class="col-sm-9">2001</dd>
+
+        <dt class="col-sm-3">Average Grade</dt>
+        <dd class="col-sm-9">9.8</dd>
+      </dl>
       <div id="result">
         <p>Current Block: <span id="current-block-val"></span></p>
       </div>
