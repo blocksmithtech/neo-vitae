@@ -22,3 +22,11 @@ function isValidWallet(walletAddress) {
     console.log("Address is valid");
     return true;
 }
+
+$(document).ready(function() {
+    $("#main-form").submit(function(event) {
+        search();
+        event.preventDefault();
+    });
+})
+
