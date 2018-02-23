@@ -1,7 +1,8 @@
 const REQUEST_URL_PRIVNET = "http://192.168.1.135:30333/";
 const REQUEST_URL_TESTNET = 'http://seed3.neo.org:10332/';
-const SCRIPT_HASH = "f112ac3f6d58b29dc2853cbf090b022e58bfb9b1";
-const OPERATION = "main";
+const SCRIPT_HASH = "2767b5977e7b27cce462feedc4c3d9d606c15473";
+const OPERATION = "get";
+let PARAMS = ["AMvk23YP6e8k6c9cuypW2U73YLcQxWg65V"];
 
 // Initialize Firebase
 const config = {
@@ -72,6 +73,11 @@ function readUserData(walletAddress) {
     }
     return userDetails;
 }
+
+function printRes(res) {
+    console.log(res);
+}
+
 
 function search(walletAddress) {
     let localNode = neo.node(REQUEST_URL_PRIVNET);
