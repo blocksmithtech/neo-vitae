@@ -72,7 +72,8 @@ def add_certification(address, content):
         new_data = concat(sender, content)
     else:
         current_data = store.deserialize_bytearray(current_data)
-        current_data.append(concat(sender, content))
+        new_entry = concat(sender, content)
+        current_data.append(new_entry)
         new_data = current_data
 
     store.put(address, store.serialize_array(new_data))
