@@ -1,6 +1,7 @@
-REQUEST_URL = "localhost:30333/";
-CONTRACT_HASH = "someHash";
-GET_OPERATION = "get";
+const REQUEST_URL = "localhost:30333/";
+REQUEST_URL = 'http://seed3.neo.org:10331/';
+const CONTRACT_HASH = "someHash";
+const GET_OPERATION = "get";
 
 /*
     invokefunction example:
