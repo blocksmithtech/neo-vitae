@@ -11,9 +11,6 @@ body {
     justify-content: center;
 }
 
-#result {
-    display: none;
-}
-#error {
+#result-block, #result-firebase, #error {
     display: none;
 }
