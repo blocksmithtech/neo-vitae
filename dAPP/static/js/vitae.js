@@ -2,12 +2,17 @@ const REQUEST_URL_PRIVNET = "http://192.168.1.135:30333/";
 const REQUEST_URL_TESTNET = 'http://seed3.neo.org:10332/';
 const SCRIPT_HASH = "2767b5977e7b27cce462feedc4c3d9d606c15473";
 const OPERATION = "get";
-let PARAMS = ["AMvk23YP6e8k6c9cuypW2U73YLcQxWg65V"];
 
-function printRes(res) {
-    console.log(res);
+function works() {
+    let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
+    let param2 = new Neon.sc.ContractParam.byteArray('AMvk23YP6e8k6c9cuypW2U73YLcQxWg65V', 'address')
+    Client.invokeFunction('2767b5977e7b27cce462feedc4c3d9d606c15473', 'get', param2).then(function(res) {
+        console.log(res);
+        let val = res.stack[0].value[0].value;
+        let decoded = Neon.u.hexstring2str(val);
+        console.log(decoded);
+    });
 }
-
 
 function search(walletAddress) {
     let localNode = neo.node(REQUEST_URL_PRIVNET);
