@@ -674,6 +674,9 @@ function node(options) {
     inst.getRawTransaction = getRawTransaction;
     inst.getTxOut = getTxOut;
 
+
+    //invoke
+    inst.invokeFunction = invokeFunction;
     return inst;
 }
 
@@ -715,6 +718,10 @@ function getRawTransaction (txId, verbose) {
 
 function getTxOut (txId, index) {
     return this.$post('gettxout', [txId, index]);
+}
+
+function invokeFunction(scriptHash, operation, params) {
+    return this.$post('invokefunction', [scriptHash, operation, params]);
 }
 
 var bind = function bind(fn, thisArg) {
