@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link href="static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap.min.css">
-    <link href="static/css/vitae.css" rel="stylesheet"></href>
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/vitae.js"></script>
-    <script src="static/js/neo.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link href="static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap.min.css">
+  <link href="static/css/vitae.css" rel="stylesheet">
+  </href>
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/vitae.js"></script>
+  <script src="static/js/neo.js"></script>
 </head>
+
 <body>
-    <div class="container">
-          <div class="main">
-              <h1>Neo-Vitae</h1>
-              <p class="lead">Blockchain-backed curricula.</p>
-          </div>
-          <form id="main-form" class="form-inline">
-            <div class="form-group mx-sm-3 mb-2">
-              <input type="text" class="form-control" id="name" placeholder="John Doe">
-            </div>
-            <button type="submit" class="btn btn-primary mb-2">Search</button>
-          </form>
-      </div><!-- /.container -->
+  <div class="container">
+    <div class="main">
+      <h1>Neo-Vitae</h1>
+      <p class="lead">Blockchain-backed curricula.</p>
+    </div>
+    <form id="main-form" class="form-inline">
+      <div class="form-group mx-sm-3 mb-2">
+        <input type="text" class="form-control" id="name" placeholder="John Doe">
+      </div>
+      <button type="submit" class="btn btn-primary mb-2">Search</button>
+    </form>
+    <div class="row">
+      <div id="result">
+        <p>Current Block: <span id="current-block-val"></span></p>
+      </div>
+    </div>
+  </div>
+  <!-- /.container -->
 </body>
+
 </html>

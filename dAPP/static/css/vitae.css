@@ -10,3 +10,7 @@ body {
 #main-form {
     justify-content: center;
 }
+
+#result {
+    display: none;
+}
