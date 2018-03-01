@@ -3,7 +3,7 @@ NEO-Vitae
 
 NEO-Vitae is a Curriculum Vitae platform that uses NEO blockchain and smart contracts, so that the viewers can automatically verify the validity of certificates, previous employers and other stuff, with all the assurances provided by a public blockchain.
 
-This project started in a attempt to participate in the 2nd dApp competition organized by [City of Zion](https://cityofzion.io/dapps/2). 
+This project started in a attempt to participate in the 2nd dApp competition organized by [City of Zion](https://cityofzion.io/dapps/2). However given the time constrains ended as entry to the [1st NEO Dev Competition](https://neo.org/competition.html)
 
 # Components
 
