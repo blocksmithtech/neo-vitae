@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="utf-8" /> 
+    <meta charset="utf-8" />
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
@@ -21,7 +21,7 @@
             <h1>Neo-Vitae</h1>
             <p class="lead">Blockchain-backed curricula.</p>
         </div>
-        <form id="main-form" class="form-inline">
+        <form id="search-form" class="form-inline">
             <div class="form-group mx-sm-3 mb-2">
                 <input type="text" class="form-control" id="walletAddress" placeholder="Wallet Address" required>
             </div>
@@ -55,6 +55,7 @@
             <button type="submit" class="btn btn-primary mb-2">Submit</button>
         </form>
 
+        <!-- THIS IS FOR DEBUG ONLY. WE SHOULD CLEAN THIS WHEN WE CAN -->
         <div class="row">
             <div id="result-block">
                 <p>Result-block: <span id="block-val"></span></p>
@@ -66,10 +67,14 @@
                 <p>Error: <span id="message"></span></p>
             </div>
         </div>
+        <!-------------------------------------------------------------->
 
     <div id="user-info">
-      <h3>Lucas Lobosque</h3>
-      <p>1 Entry found</p>
+        <img id="user-profile-pic" src=""/>
+        <h3 id="user-name"></h3>
+        <a id="user-email" href=""></a>
+        <h5 id="user-dob"></h5>
+        <p>1 Entry found</p>
     </div>
     <div id ="entries" class="row">
       <dl class="row entry col-sm-8">

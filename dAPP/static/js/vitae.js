@@ -16,6 +16,29 @@ const config = {
 firebase.initializeApp(config);
 console.log(firebase);
 
+function cleanDebugInfo() {
+    $("#message").html("");
+    $("#error").hide();
+    $("#firebase-val").html("");
+    $("#result-firebase").hide();
+    $("block-val").html("");
+    $("#result-val").hide();
+}
+
+function displaySearchResults(userDetails) {
+    let userName = userDetails.firstName.concat(" ");
+    userName = userName.concat(userDetails.lastName);
+    let userEmail = userDetails.email;
+    let mailto = "mailto:".concat(userEmail);
+    let userDoB = userDetails.dateOfBirth;
+    let userProfilePic = userDetails.profilePic;
+    $("#user-profile-pic").attr("src", userProfilePic);
+    $("#user-name").html(userName);
+    $("#user-email").html(userEmail);
+    $("#user-email").attr("href", mailto);
+    $("#user-dob").html(userDoB);
+}
+
 function error(message) {
     $("#message").html(message);
     $("#error").show();
@@ -26,8 +49,8 @@ function isValidDate(date) {
 
     date = date.replace('/-/g', '');
 
-    var month = parseInt(date.substring(0, 2),10);
-    var day   = parseInt(date.substring(2, 4),10);
+    var day   = parseInt(date.substring(0, 2),10);
+    var month = parseInt(date.substring(2, 4),10);
     var year  = parseInt(date.substring(4, 8),10);
 
     if(isNaN(month) || isNaN(day) || isNaN(year)) return false;
@@ -64,17 +87,19 @@ function readUserData(walletAddress) {
     var userDetails;
     try {
         firebase.database().ref('/users/' + walletAddress).once('value').then(function(snapshot) {
-            successFirebase(JSON.stringify(snapshot.val()));
+            userDetails = snapshot.val();
+            successFirebase(JSON.stringify(userDetails));
+            displaySearchResults(userDetails);
         });
     } catch(err) {
         console.error(err);
         error("An error as occurred. Please try again later");
     }
-    return userDetails;
 }
 
 function printRes(res) {
     console.log(res);
+}
 
 function works() {
     let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
@@ -110,7 +135,7 @@ function writeUserData(walletAddress, firstName, lastName, dateOfBirth, email) {
     console.log(firstName);
     console.log(lastName);
     console.log(dateOfBirth);
-    console.log(email)
+    console.log(email);
     try {
         firebase.database().ref('users/' + walletAddress).set({
             firstName: firstName,
@@ -126,6 +151,9 @@ function writeUserData(walletAddress, firstName, lastName, dateOfBirth, email) {
 
 }
 
+function storeProfilePicture() {
+}
+
 function successBlock(message) {
     $("block-val").html(message);
     $("#result-val").show();
@@ -139,13 +167,12 @@ function successFirebase(message) {
 
 
 $(document).ready(function() {
-    $("#main-form").submit(function(event) {
+    $("#search-form").submit(function(event) {
+        cleanDebugInfo();
         let walletAddress = document.getElementById("walletAddress").value;
         if (isValidWallet(walletAddress)) {
             search(walletAddress);
-            userDetails = readUserData(walletAddress);
-            console.log(userDetails);
-            successFirebase(JSON.stringify(userDetails));
+            readUserData(walletAddress);
         } else {
             error("This is not a valid NEO wallet address");
         }
@@ -154,11 +181,12 @@ $(document).ready(function() {
     });
 
     $("#insert-form").submit(function(event) {
+        cleanDebugInfo();
         let walletAddress = document.getElementById("newWalletAddress").value;
         let day = document.getElementById("day").value.toString();
         let month = document.getElementById("month").value.toString();
         let year = document.getElementById("year").value.toString();
-        let dateOfBirth = month + "/" + day + "/" + year;
+        let dateOfBirth = day + "/" + month + "/" + year;
         let firstName = document.getElementById("firstName").value;
         let lastName = document.getElementById("lastName").value;
         let email = document.getElementById("email").value;
