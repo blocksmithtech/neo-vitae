@@ -17,8 +17,10 @@ from utils.storage import StorageManager
 def Main(operation, args):
     """Supports 2 operations
 
-    Consulting the existing data
-    And inserting data about someone else
+    1.  Consulting the existing data (get)
+        > get ["{address}"]
+    2.  Inserting data about someone else (certify)
+        > certify ["{address}","{hash}"]
     """
 
     if len(args) == 0:
@@ -35,7 +37,7 @@ def Main(operation, args):
             Log('You cannot add certitications for yourself')
             return ['Error']
         if 1 == len(args):
-            Log('To certify 2 parameters are needed - [address] [content]')
+            Log('To certify 2 parameters are needed - [address] [hash]')
             return ['Error']
         content = args[1]
         return add_certification(address, content)
@@ -87,4 +89,4 @@ def add_certification(address, content):
     final_data = store.serialize_array(new_data)
     store.put(address, final_data)
     Notify('New certification added.', address, content)
-    return [final_data]
+    return [new_data]
