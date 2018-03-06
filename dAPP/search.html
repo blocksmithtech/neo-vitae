@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+    <title>Neo-Vitae - One place for all your achievements</title>
     <meta charset="utf-8" />
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -12,7 +12,6 @@
     <script src="static/js/vitae.js"></script>
     <script src="static/js/neo.js"></script>
     <script src="static/js/browser.js"></script>
-
 </head>
 
 <body>
@@ -21,14 +20,14 @@
             <h1>Neo-Vitae</h1>
             <p class="lead">Blockchain-backed curricula.</p>
         </div>
-        <form id="main-form" class="form-inline">
+        <form id="search-form" class="form-inline">
             <div class="form-group mx-sm-3 mb-2">
                 <input type="text" class="form-control" id="walletAddress" placeholder="Wallet Address" required>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Search</button>
         </form>
 
-        <!---<form id="insert-form" class="form-inline">
+        <form id="insert-form" class="form-inline">
             <div class="form-group mx-sm-3 mb-2">
                 <input type="text" class="form-control" id="newWalletAddress" placeholder="Wallet Address" required>
                 <input type="text" class="form-control" id="firstName" placeholder="First Name" required>
@@ -51,48 +50,45 @@
                 </select>
                 <input type="number" class="form-control" id="day" placeholder=1 max=31 min=1 required>
                 <input type="number" class="form-control" id="year" placeholder=1990 max=2010 min=1900 required>
+                <input type="file" name="profile-pic" id="profile-pic"/>
             </div>
             <button type="submit" class="btn btn-primary mb-2">Submit</button>
-        </form> -->
-
+        </form>
         <div class="row">
+            <!-- THIS IS FOR DEBUG ONLY. WE SHOULD CLEAN THIS WHEN WE CAN -->
             <div id="result-block">
                 <p>Result-block: <span id="block-val"></span></p>
             </div>
             <div id="result-firebase">
                 <p>Result-firebase: <span id="firebase-val"></span></p>
             </div>
-            <div id="error">
-                <p>Error: <span id="message"></span></p>
+            <!--                                                          -->
+
+            <div id="user-info">
+                <img id="user-profile-pic" src="" alt="Profile Picture"/>
+                <h3 id="user-name"></h3>
+                <a id="user-email" href=""></a>
+                <h5 id="user-dob"></h5>
+                <p>1 Entry found</p>
+            </div>
+            <div id ="entries" class="row">
+                <dl class="row entry col-sm-8">
+                    <dt class="col-sm-3">College Name</dt>
+                    <dd class="col-sm-9">University of São Paulo</dd>
+
+                    <dt class="col-sm-3">Degree Type</dt>
+                    <dd class="col-sm-9">Bacharel</dd>
+
+                    <dt class="col-sm-3">Year</dt>
+                    <dd class="col-sm-9">2001</dd>
+
+                    <dt class="col-sm-3">Average Grade</dt>
+                    <dd class="col-sm-9">9.8</dd>
+                </dl>
             </div>
         </div>
-
-    <div id="user-info">
-      <h3>Lucas Lobosque</h3>
-      <p>1 Entry found</p>
     </div>
-    <div id ="entries" class="row">
-      <dl class="row entry col-sm-8">
-        <dt class="col-sm-3">College Name</dt>
-        <dd class="col-sm-9">University of São Paulo</dd>
-
-        <dt class="col-sm-3">Degree Type</dt>
-        <dd class="col-sm-9">Bacharel</dd>
-
-        <dt class="col-sm-3">Year</dt>
-        <dd class="col-sm-9">2001</dd>
-
-        <dt class="col-sm-3">Average Grade</dt>
-        <dd class="col-sm-9">9.8</dd>
-      </dl>
-      <div id="result">
-        <p>Current Block: <span id="current-block-val"></span></p>
-      </div>
-      <div id="error">
-        <p>Error: <span id="message"></span></p>
-      </div>
-    </div>
-  <!-- /.container -->
+        <!-- /.container -->
 </body>
 
 </html>
