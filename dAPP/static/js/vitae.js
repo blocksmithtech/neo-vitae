@@ -1,5 +1,6 @@
-const REQUEST_URL_PRIVNET = "http://192.168.1.135:30333/";
+const REQUEST_URL_PRIVNET = "http://127.0.0.1:30333/";
 const REQUEST_URL_TESTNET = 'http://seed3.neo.org:10332/';
+const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/'
 const SCRIPT_HASH = "2767b5977e7b27cce462feedc4c3d9d606c15473";
 const OPERATION = "get";
 
@@ -75,6 +76,7 @@ function readUserData(walletAddress) {
 
 function printRes(res) {
     console.log(res);
+}
 
 function works() {
     let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
@@ -96,8 +98,10 @@ function search(walletAddress) {
             "value" : walletAddress
         }
     ];
+    console.log("Fetching Blockchain data:")
     console.log(params);
     localNode.invokeFunction(SCRIPT_HASH, OPERATION, params).then(function (result) {
+        console.log("Blockchain returned:")
         console.log(result);
         successBlock(JSON.stringify(result));
 
@@ -177,5 +181,4 @@ $(document).ready(function() {
 
         event.preventDefault();
     });
-
-})
+});
