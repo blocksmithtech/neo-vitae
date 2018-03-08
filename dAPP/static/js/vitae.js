@@ -1,7 +1,7 @@
 const REQUEST_URL_PRIVNET = "http://127.0.0.1:30333/";
 const REQUEST_URL_TESTNET = 'http://seed3.neo.org:10332/';
 const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/'
-const SCRIPT_HASH = "2767b5977e7b27cce462feedc4c3d9d606c15473";
+const SCRIPT_HASH = "0x3e1c2c68382523cdcce6fee32a33c017c0d8e2c0";
 const OPERATION = "get";
 
 // Initialize Firebase
@@ -55,6 +55,21 @@ function isValidDate(date) {
 function isValidEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+}
+
+
+/*
+*
+*  All results are returned as hex string, we need to transform before parsing
+*  the JSON string
+*
+*/
+function hex2a(hexx) {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
 }
 
 
@@ -112,9 +127,14 @@ function search(walletAddress) {
     console.log(params);
     localNode.invokeFunction(SCRIPT_HASH, OPERATION, params).then(function (result) {
         console.log("Blockchain returned:")
-        console.log(result);
-        successBlock(JSON.stringify(result));
-
+        if (result.stack.length > 0){
+            data = JSON.parse(hex2a(result.stack[0].value));
+            console.log(data)
+        }
+        else {
+            data = { "error": "Something went wrong."}
+        }
+        successBlock(data);
     });
 }
 

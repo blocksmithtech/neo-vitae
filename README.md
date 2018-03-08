@@ -25,11 +25,11 @@ For the `dApp`, the [neo-api-js](https://github.com/CityOfZion/neo-api-js) libra
 
 **Step1** - after cloning the repository, launch your `neo-python` client and build the smart-contract:
 
-> neo> build {path_to}/neo-vitae.py test 0710 05 True False get ["{wallet address}"]
+> neo> build {path_to}/neo-vitae.py test 0710 07 True False get ["{wallet address}"]
 
 **Step2** - Import the contract to the blockchain:
 
-> neo> import contract {path_to}/neo-vitae.avm 0710 05 True False
+> neo> import contract {path_to}/neo-vitae.avm 0710 07 True False
 
 **Step3** - Search for the contract and grab the hash:
 
@@ -37,7 +37,7 @@ For the `dApp`, the [neo-api-js](https://github.com/CityOfZion/neo-api-js) libra
 
 **Step4** - Invoke the contract. There are 2 operations `certify` and `get` that should be invoked this way:
 
-> neo> testinvoke {contract_hash_here} certify ["{wallet_to_certify}","{data_about_the_certification}"]
+> neo> testinvoke {contract_hash_here} certify ["{wallet_to_certify}","{hash_that_of_the_contents}"]
 
 and 
 
