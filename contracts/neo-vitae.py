@@ -108,7 +108,7 @@ def json_array(items):
 # END OF SERIALIZATION METHODS ------------------------------------------------
 
 
-def entries_json_objects(entries):
+def parse_saved_entries(entries):
     """Transform a list of strings in a list of key-value JSON objects
 
     Separates the Key (address) part from the value (IPFS hash) and adds that
@@ -116,8 +116,8 @@ def entries_json_objects(entries):
     """
     objects = []
     for entry in entries:
-        sender_address = substr(entry, 0, 40)
-        content = substr(entry, 40, len(entry) - 40)
+        sender_address = substr(entry, 0, 34)
+        content = substr(entry, 34, len(entry) - 34)
         objects.append(simple_json_object(sender_address, content))
     return objects
 
@@ -133,7 +133,7 @@ def get_certs(address):
     current_data = Get(ctx, address)
     if current_data:
         entries = deserialize_bytearray(current_data)
-        objects = entries_json_objects(entries)
+        objects = parse_saved_entries(entries)
         final = json_array(objects)
         Notify(final)
     else:
