@@ -14,8 +14,10 @@ from boa.interop.System.ExecutionEngine import GetCallingScriptHash
 from boa.builtins import concat, list, range, substr
 
 
-# Serialization methods, grabbed from "neo-boa" tests
-
+# SERIALIZATION METHOS --------------------------------------------------------
+#
+# grabbed from "neo-boa" tests
+#
 def deserialize_bytearray(data):
     # ok this is weird.  if you remove this print statement, it stops working :/
     # get length of length
@@ -82,6 +84,7 @@ def serialize_var_length_item(item):
 
 
 def simple_json_object(key, value):
+    """Join 2 strings in a JSON object string"""
     content = '{'
     obj_key = concat('"', concat(key, '"'))
     obj_value = concat('"', concat(value, '"'))
@@ -91,6 +94,7 @@ def simple_json_object(key, value):
 
 
 def json_array(items):
+    """ Concats a list of strings as an JSON array"""
     content = '['
     size = len(items)
 
@@ -100,11 +104,16 @@ def json_array(items):
             content = concat(content, ',')
 
     return concat(content, ']')
-
-# END OF SERIALIZATION METHODS
+#
+# END OF SERIALIZATION METHODS ------------------------------------------------
 
 
 def entries_json_objects(entries):
+    """Transform a list of strings in a list of key-value JSON objects
+
+    Separates the Key (address) part from the value (IPFS hash) and adds that
+    as object string.
+    """
     objects = []
     for entry in entries:
         sender_address = substr(entry, 0, 40)
@@ -113,10 +122,12 @@ def entries_json_objects(entries):
     return objects
 
 
+# OPERATION FUNCTIONs ---------------------------------------------------------
+
 def get_certs(address):
     """Fetches all certifications for a given address
 
-    return a list of certifying user and content
+    returns: a list of certifying user and content
     """
     ctx = GetContext()
     current_data = Get(ctx, address)
@@ -134,7 +145,7 @@ def get_certs(address):
 def add_certification(address, content):
     """Writes to the blockchain something about the given address
 
-    returns the existing data
+    returns: success message
     """
     sender = GetCallingScriptHash()
     ctx = GetContext()
@@ -153,8 +164,9 @@ def add_certification(address, content):
     final_data = serialize_array(new_data)
     Put(ctx, address, final_data)
     Log('New certification added.')
+    return '[{"success":"New certification added."}]'
 
-    return json_array(entries_json_objects(new_data))
+# END OF OPERATION FUNCTION ---------------------------------------------------
 
 
 def Main(operation, args):
