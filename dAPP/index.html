@@ -9,13 +9,13 @@
 
     <title>Neo-Vitae - One place for all your achievements</title>
 
-
     <link href="static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap.min.css">
     <link href="static/css/vitae.css" rel="stylesheet">
     <link href="static/css/cover.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
   </head>
 
-  <body>
+  <body onload="getCurrentUser()">
 
     <div class="site-wrapper">
 
@@ -30,6 +30,8 @@
                 <a class="nav-link active" href="#">Home</a>
                 <a class="nav-link" href="search.html">Search Curriculum</a>
                 <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link" id="signin" href="#" data-toggle="modal" data-target="#exampleModalCenter">Sign in</a>
+                <a class="nav-link" id="logout" href="#" onclick="signOut()">Logout</a>
               </nav>
             </div>
           </div>
@@ -44,7 +46,7 @@
 
           <div class="mastfoot">
             <div class="inner">
-              <p>Cover template for <a href="https://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
+              <p>Made with &hearts; by <a href="https://www.blocksmith.tech">Blocksmith</a>.</p>
             </div>
 
           </div>
@@ -54,8 +56,33 @@
       </div>
 
     </div>
+
+    <!-- Authentication Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Sign Up</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <div id="firebaseui-auth-container"></div>
+              <div id="loader">Loading...</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
     <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/auth.js"></script>
   </body>
 </html>

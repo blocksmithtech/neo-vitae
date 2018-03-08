@@ -10,9 +10,9 @@ const config = {
 firebase.initializeApp(config);
 
 // Initialize the FirebaseUI Widget using Firebase.
-var ui = new firebaseui.auth.AuthUI(firebase.auth());
+let ui = new firebaseui.auth.AuthUI(firebase.auth());
 
-var uiConfig = {
+let uiConfig = {
   callbacks: {
     signInSuccess: function(currentUser, credential, redirectUrl) {
       // User successfully signed in.
@@ -20,7 +20,7 @@ var uiConfig = {
       // or whether we leave that to developer to handle.
       let currentUserToString = JSON.stringify(currentUser);
       console.log(currentUserToString);
-      setCookie("currentUser", currentUserToString, 7);
+      setCookie("Current-User", currentUserToString, 7);
       debugger;
       return true;
     },
@@ -47,18 +47,31 @@ var uiConfig = {
 // The start method will wait until the DOM is loaded.
 ui.start('#firebaseui-auth-container', uiConfig);
 
-function setCookie(cname, cvalue, exdays) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires="+d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
+initApp = function() {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            // User is signed in.
+            $("#signin").hide();
+            $("#logout").show();
+        } else {
+            // User is signed out.
+            $("#signin").show();
+            $("#logout").hide();
+          }
+    }, function(error) {
+        console.log(error);
+    });
+  };
+
+window.addEventListener('load', function() {
+    initApp()
+});
 
 function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++) {
-        var c = ca[i];
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
         }
@@ -67,4 +80,25 @@ function getCookie(cname) {
         }
     }
     return null;
+}
+
+function getCurrentUser() {
+    let currentUser = JSON.parse(getCookie("Current-User"));
+    return currentUser;
+}
+
+function setCookie(cname, cvalue, exdays) {
+    let d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function signOut() {
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+      setCookie("Current-User", "", 0);
+    }).catch(function(error) {
+      // An error happened.
+    });
 }
