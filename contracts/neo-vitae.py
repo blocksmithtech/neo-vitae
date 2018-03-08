@@ -142,15 +142,14 @@ def get_certs(address):
     return final
 
 
-def add_certification(address, content):
+def add_certification(address, caller_address, content):
     """Writes to the blockchain something about the given address
 
     returns: success message
     """
-    sender = GetCallingScriptHash()
     ctx = GetContext()
     current_data = Get(ctx, address)
-    new_entry = concat(sender, content)
+    new_entry = concat(caller_address, content)
     new_data = []
 
     if not current_data:
@@ -195,12 +194,18 @@ def Main(operation, args):
         if CheckWitness(address):
             Log('You cannot add certitications for yourself')
             return '[{"error": "You cannot add certitications for yourself"}]'
-        if 1 == len(args):
-            Log('To certify 2 parameters are needed - [address] [hash]')
-            return '[{"error": "To certify 2 parameters are needed - [address] [hash]"}]'
+        if 3 == len(args):
+            Log('To certify 3 parameters are needed - [address] [caller_address] [hash]')
+            return '[{"error": "To certify 2 parameters are needed - [address] [caller_address] [hash]"}]'
 
-        content = args[1]
-        return add_certification(address, content)
+        caller_address = args[1]
+
+        if not CheckWitness(caller_address):
+            Log('You need to provide your own address')
+            return '[{"error": "You need to provide your own address"}]'
+
+        content = args[2]
+        return add_certification(address, caller_address, content)
     else:
         Log('Invalid Operation')
         return '[{"error": "Invalid Operation"}]'
