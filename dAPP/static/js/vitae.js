@@ -4,19 +4,10 @@ const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/'
 const SCRIPT_HASH = "0x3e1c2c68382523cdcce6fee32a33c017c0d8e2c0";
 const OPERATION = "get";
 
-// Initialize Firebase
-const config = {
-    apiKey: "AIzaSyDXnDvVpoRnCdDMl-YnVoBDLmsSvQGI6KY",
-    authDomain: "neo-vitae.firebaseapp.com",
-    databaseURL: "https://neo-vitae.firebaseio.com",
-    projectId: "neo-vitae",
-    storageBucket: "neo-vitae.appspot.com",
-    messagingSenderId: "1094595397246"
-};
-
-firebase.initializeApp(config);
-
-
+/*
+* This is useful for DEBUG only
+* TODO: Get rid of this
+*/
 function cleanDebugInfo() {
     $("#message").html("");
     $("#error").hide();
@@ -26,6 +17,10 @@ function cleanDebugInfo() {
     $("#result-val").hide();
 }
 
+/*
+* Displays a search results
+* @params {object} userDetails - An object with the user details
+*/
 function displaySearchResults(userDetails) {
     let userName = userDetails.firstName.concat(" ");
     userName = userName.concat(userDetails.lastName);
@@ -41,46 +36,52 @@ function displaySearchResults(userDetails) {
     $("#user-info").show();
 }
 
+/*
+* This is useful for DEBUG only
+* TODO: Get rid of this
+*/
 function error(message) {
     $("#message").html(message);
     $("#error").show();
 }
 
+/*
+* Returns true if a given date is valid and false otherwise.
+* @params {string} date
+* @returns {boolean}
+*/
 function isValidDate(date) {
   let bits = date.split('/');
   let d = new Date(bits[2], bits[1] - 1, bits[0]);
   return d && (d.getMonth() + 1) == bits[1];
 }
 
+/*
+* Returns true if a given email matches a regular expression that validates email syntaxe,
+* false otherwise.
+* @params {string} email
+* @returns {boolean}
+*/
 function isValidEmail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
+/*
+* Returns true if a given wallet address seems to be valid
+* @params {string} walletAddress
+* @returns {boolean}
+*/
 function isValidWallet(walletAddress) {
-    if (walletAddress.length !== 34 || walletAddress[0] != 'A') { //NEO wallet addresses have 34 chars and start with 'A'
+    //NEO wallet addresses have 34 chars and start with 'A'
+    if (walletAddress.length !== 34 || walletAddress[0] != 'A') {
         return false;
     }
     return true;
 }
 
-function readUserData(walletAddress) {
-    var userDetails;
-    try {
-        firebase.database().ref('/users/' + walletAddress).once('value').then(function(snapshot) {
-            userDetails = snapshot.val();
-            successFirebase(JSON.stringify(userDetails));
-            displaySearchResults(userDetails);
-        });
-    } catch(err) {
-        console.error(err);
-        error("An error as occurred. Please try again later");
-    }
-}
-
-
 /*
-* 
+*
 * Searches for an entry to a given wallet Hash into the Neo-Vitae blockchain data.
 * Returns an string representing the JSON data.
 * TODO: handle the case where nothing is found for a given address.
@@ -95,63 +96,29 @@ function search() {
     });
 }
 
-function storeProfile(walletAddress, firstName, lastName, dateOfBirth, email) {
-    let profilePic = document.getElementById("profile-pic").files[0];
-    if (profilePic === null) {
-        error("A profile picture is mandatory!");
-        return null;
-    }
-    let timestamp = Date.now();
-    let uniqueName = timestamp + "." + profilePic.name;
-
-    // Stores the image in /images folder in firebase storage
-    let storageRef = firebase.storage().ref();
-
-    let storageFolder = storageRef.child('/images/' + uniqueName);
-    try {
-        storageFolder.put(profilePic)
-            .then((snapshot) => {
-                let profilePicDownloadURL = snapshot.downloadURL;
-                writeUserData(walletAddress, firstName, lastName, dateOfBirth, email, profilePicDownloadURL);
-        });
-    } catch(err) {
-        console.error();(err);
-        error("Some error occcurred uploading your picture. Try again later.");
-        return null;
-    }
-    return null;
-
-}
-
+/*
+* This is useful for DEBUG only
+* TODO: Get rid of this
+*/
 function successBlock(message) {
     $("block-val").html(message);
     $("#result-val").show();
 }
 
+/*
+* This is useful for DEBUG only
+* TODO: Get rid of this
+*/
 function successFirebase(message) {
     $("#firebase-val").html(message);
     $("#result-firebase").show();
 }
 
-function writeUserData(walletAddress, firstName, lastName, dateOfBirth, email, profilePicDownloadURL) {
-    try {
-        firebase.database().ref('users/' + walletAddress).set({
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            dateOfBirth: dateOfBirth,
-            profilePic: profilePicDownloadURL
-        });
-        successFirebase("Your data was saved successfully");
-    } catch(err) {
-        console.error("An error occurred: " + err);
-        error("It was not possible to save your data at this time. Please try again later");
-    }
 
-}
 
 $(document).ready(function() {
     $("#search-form").submit(function(event) {
+        // DEBUG
         cleanDebugInfo();
         let walletAddress = document.getElementById("walletAddress").value;
         if (isValidWallet(walletAddress)) {
@@ -166,6 +133,7 @@ $(document).ready(function() {
 
     $("#insert-form").submit(function(event) {
         event.preventDefault();
+        // DEBUG
         cleanDebugInfo();
         let walletAddress = document.getElementById("newWalletAddress").value;
         let day = document.getElementById("day").value.toString();
