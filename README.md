@@ -37,7 +37,7 @@ For the `dApp`, the [neo-api-js](https://github.com/CityOfZion/neo-api-js) libra
 
 **Step4** - Invoke the contract. There are 2 operations `certify` and `get` that should be invoked this way:
 
-> neo> testinvoke {contract_hash_here} certify ["{wallet_to_certify}","{hash_that_of_the_contents}"]
+> neo> testinvoke {contract_hash_here} certify ["{wallet_to_certify}","{own_wallet_address}","{hash_that_of_the_contents}"]
 
 and 
 
