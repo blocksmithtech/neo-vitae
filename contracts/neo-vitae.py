@@ -116,8 +116,8 @@ def parse_saved_entries(entries):
     """
     objects = []
     for entry in entries:
-        sender_address = substr(entry, 0, 34)
-        content = substr(entry, 34, len(entry) - 34)
+        sender_address = substr(entry, 0, 20)
+        content = substr(entry, 20, len(entry) - 20)
         objects.append(simple_json_object(sender_address, content))
     return objects
 
@@ -183,6 +183,10 @@ def Main(operation, args):
         return '[{"error": "You need to provide at least 1 parameter - [address]"}]'
 
     address = args[0]
+
+    if len(address) != 20:
+        Log('Wrong address size')
+        return '[{"error": "Wrong address size"}]'
 
     if operation == 'get':
         return get_certs(address)
