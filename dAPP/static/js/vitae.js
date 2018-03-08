@@ -69,12 +69,18 @@ function isValidWallet(walletAddress) {
 */
 function search() {
     let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
-    let param2 = new Neon.sc.ContractParam.byteArray('AMvk23YP6e8k6c9cuypW2U73YLcQxWg65V', 'address');
-    return Client.invokeFunction('2767b5977e7b27cce462feedc4c3d9d606c15473', 'get', param2).then(function(res) {
-        let val = res.stack[0].value[0].value;
+    let param2 = new Neon.sc.ContractParam.byteArray('AYkNyJrFnVkGpWixxGpPDQekzj4R9U3Zmz', 'address');
+    return Client.invokeFunction('0xf30097b13ae7b3d67fe6e63b674e1237c097efe5', 'get', param2).then(function(res) {
+        let val = res.stack[0].value;
         let decoded = Neon.u.hexstring2str(val);
-        return Promise.resolve(decoded);
+        //TODO: JSON parsing not working!
+        let json = JSON.parse(decoded);
+        return getIPFSAddress(json['value']);
     });
+}
+
+function getIPFSAddress(address) {
+    return $.getJSON('https://ipfs.io/ipfs/' + address);
 }
 
 /*
@@ -84,6 +90,34 @@ function search() {
 function successBlock(message) {
     $("block-val").html(message);
     $("#result-val").show();
+}
+
+function storeProfile(walletAddress, firstName, lastName, dateOfBirth, email) {
+    let profilePic = document.getElementById("profile-pic").files[0];
+    if (profilePic === null) {
+        error("A profile picture is mandatory!");
+        return null;
+    }
+    let timestamp = Date.now();
+    let uniqueName = timestamp + "." + profilePic.name;
+
+    // Stores the image in /images folder in firebase storage
+    let storageRef = firebase.storage().ref();
+
+    let storageFolder = storageRef.child('/images/' + uniqueName);
+    try {
+        storageFolder.put(profilePic)
+            .then((snapshot) => {
+                let profilePicDownloadURL = snapshot.downloadURL;
+                writeUserData(walletAddress, firstName, lastName, dateOfBirth, email, profilePicDownloadURL);
+        });
+    } catch(err) {
+        console.error();(err);
+        error("Some error occcurred uploading your picture. Try again later.");
+        return null;
+    }
+    return null;
+
 }
 
 /*
