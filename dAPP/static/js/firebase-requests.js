@@ -1,4 +1,23 @@
 /*
+* Displays search results
+* @params {object} userDetails - An object with the user details
+*/
+function displaySearchResults(userDetails) {
+    let userName = userDetails.firstName.concat(" ");
+    userName = userName.concat(userDetails.lastName);
+    let userEmail = userDetails.email;
+    let mailto = "mailto:".concat(userEmail);
+    let userDoB = userDetails.dateOfBirth;
+    let userProfilePic = userDetails.profilePic;
+    $("#user-profile-pic").attr("src", userProfilePic);
+    $("#user-name").html(userName);
+    $("#user-email").html(userEmail);
+    $("#user-email").attr("href", mailto);
+    $("#user-dob").html(userDoB);
+    $("#user-info").show();
+}
+
+/*
 * Reads user data from firebase. This allows us to match a wallet address to its owner data.
 * @param {string} walletAddress - A user wallet address.
 * TODO: Error handling
