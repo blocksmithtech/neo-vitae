@@ -194,9 +194,9 @@ def Main(operation, args):
         if CheckWitness(address):
             Log('You cannot add certitications for yourself')
             return '[{"error": "You cannot add certitications for yourself"}]'
-        if 3 == len(args):
+        if 3 != len(args):
             Log('To certify 3 parameters are needed - [address] [caller_address] [hash]')
-            return '[{"error": "To certify 2 parameters are needed - [address] [caller_address] [hash]"}]'
+            return '[{"error": "To certify 3 parameters are needed - [address] [caller_address] [hash]"}]'
 
         caller_address = args[1]
 
