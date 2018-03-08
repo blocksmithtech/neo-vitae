@@ -6,7 +6,7 @@ const OPERATION = "get";
 
 /*
 * This is useful for DEBUG only
-* TODO: Get rid of this
+* TODO: Get rid of this before sending to production
 */
 function cleanDebugInfo() {
     $("#message").html("");
@@ -18,7 +18,7 @@ function cleanDebugInfo() {
 }
 
 /*
-* Displays a search results
+* Displays the search results
 * @params {object} userDetails - An object with the user details
 */
 function displaySearchResults(userDetails) {
@@ -38,7 +38,7 @@ function displaySearchResults(userDetails) {
 
 /*
 * This is useful for DEBUG only
-* TODO: Get rid of this
+* TODO: Convert this into pretty message
 */
 function error(message) {
     $("#message").html(message);
@@ -98,7 +98,7 @@ function search() {
 
 /*
 * This is useful for DEBUG only
-* TODO: Get rid of this
+* TODO: Get rid of this before sending to production
 */
 function successBlock(message) {
     $("block-val").html(message);
@@ -107,7 +107,7 @@ function successBlock(message) {
 
 /*
 * This is useful for DEBUG only
-* TODO: Get rid of this
+* TODO: Get rid of this before sending to productionv
 */
 function successFirebase(message) {
     $("#firebase-val").html(message);
@@ -118,9 +118,12 @@ function successFirebase(message) {
 
 $(document).ready(function() {
     $("#search-form").submit(function(event) {
-        // DEBUG
+        // This cleans DEBUG info. TODO: Remove this when no longer needed
         cleanDebugInfo();
+        // Gets walletAddress
         let walletAddress = document.getElementById("walletAddress").value;
+        // Checks if walletAddress is valid
+        // TODO: Pretty message on invalid data
         if (isValidWallet(walletAddress)) {
             search(walletAddress);
             readUserData(walletAddress);
@@ -133,7 +136,7 @@ $(document).ready(function() {
 
     $("#insert-form").submit(function(event) {
         event.preventDefault();
-        // DEBUG
+        // This cleans DEBUG info. TODO: Remove this when no longer needed
         cleanDebugInfo();
         let walletAddress = document.getElementById("newWalletAddress").value;
         let day = document.getElementById("day").value.toString();
@@ -143,10 +146,14 @@ $(document).ready(function() {
         let firstName = document.getElementById("firstName").value;
         let lastName = document.getElementById("lastName").value;
         let email = document.getElementById("email").value;
+        // Checks if walletAddress is valid
+        // TODO: Pretty message on invalid data
         if (!isValidWallet(walletAddress)) {
             error("This is not a valid NEO wallet address");
             return;
         }
+        // Checks if email and date is valid
+        // TODO: Pretty message on invalid data
         if (!isValidEmail(email) || !isValidDate(dateOfBirth)) {
             error("Email or date of birth not valid");
             return;
