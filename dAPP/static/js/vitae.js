@@ -1,4 +1,4 @@
-const REQUEST_URL_PRIVNET = "http://127.0.0.1:30333/";
+const REQUEST_URL_PRIVNET = "http://95.172.164.173:30333/";
 const REQUEST_URL_TESTNET = 'http://seed3.neo.org:10332/';
 const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/'
 const SCRIPT_HASH = "0x3e1c2c68382523cdcce6fee32a33c017c0d8e2c0";
@@ -57,32 +57,11 @@ function isValidEmail(email) {
     return re.test(email);
 }
 
-
-/*
-*
-*  All results are returned as hex string, we need to transform before parsing
-*  the JSON string
-*
-*/
-function hex2a(hexx) {
-    var hex = hexx.toString();//force conversion
-    var str = '';
-    for (var i = 0; i < hex.length; i += 2)
-        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-    return str;
-}
-
-
 function isValidWallet(walletAddress) {
     if (walletAddress.length !== 34 || walletAddress[0] != 'A') { //NEO wallet addresses have 34 chars and start with 'A'
         return false;
     }
-    // further ways to validate a wallet address
     return true;
-}
-
-function printRes(res) {
-    console.log(res);
 }
 
 function readUserData(walletAddress) {
@@ -99,42 +78,20 @@ function readUserData(walletAddress) {
     }
 }
 
-function printRes(res) {
-    console.log(res);
-}
 
-function works() {
+/*
+* 
+* Searches for an entry to a given wallet Hash into the Neo-Vitae blockchain data.
+* Returns an string representing the JSON data.
+* TODO: handle the case where nothing is found for a given address.
+*/
+function search() {
     let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
-    let param2 = new Neon.sc.ContractParam.byteArray('AMvk23YP6e8k6c9cuypW2U73YLcQxWg65V', 'address')
-    Client.invokeFunction('2767b5977e7b27cce462feedc4c3d9d606c15473', 'get', param2).then(function(res) {
-        console.log(res);
+    let param2 = new Neon.sc.ContractParam.byteArray('AMvk23YP6e8k6c9cuypW2U73YLcQxWg65V', 'address');
+    return Client.invokeFunction('2767b5977e7b27cce462feedc4c3d9d606c15473', 'get', param2).then(function(res) {
         let val = res.stack[0].value[0].value;
         let decoded = Neon.u.hexstring2str(val);
-        console.log(decoded);
-    });
-
-}
-
-function search(walletAddress) {
-    let localNode = neo.node(REQUEST_URL_PRIVNET);
-    let params = [
-        {
-            "type" : "String",
-            "value" : walletAddress
-        }
-    ];
-    console.log("Fetching Blockchain data:")
-    console.log(params);
-    localNode.invokeFunction(SCRIPT_HASH, OPERATION, params).then(function (result) {
-        console.log("Blockchain returned:")
-        if (result.stack.length > 0){
-            data = JSON.parse(hex2a(result.stack[0].value));
-            console.log(data)
-        }
-        else {
-            data = { "error": "Something went wrong."}
-        }
-        successBlock(data);
+        return Promise.resolve(decoded);
     });
 }
 
