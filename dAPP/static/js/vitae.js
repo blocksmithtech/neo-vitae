@@ -91,10 +91,7 @@ function search() {
             promises.push(fetchIPFSData(key, val));
         });
         return Promise.all(promises);
-    }).then(function(res) {
-        console.log(res);
     });
-}
 
 /*
 * This is useful for DEBUG only
