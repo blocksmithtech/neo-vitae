@@ -55,7 +55,6 @@ function displaySearchResults(userDetails) {
 * TODO: Error handling
 */
 function readCertifierData(certifiers) {
-    debugger;
     for (let i = 0; i < certifiers.length; i++) {
         let certifier = certifiers[i];
 

@@ -92,6 +92,7 @@ function search() {
         });
         return Promise.all(promises);
     });
+}
 
 /*
 * This is useful for DEBUG only
