@@ -53,6 +53,10 @@ body{
   opacity: 0.8;
 }
 
+.o-nav .nav-link--active{
+  border-color: #745fb5;
+}
+
 .o-nav--brand{
   font-weight: 900;
   font-size: 2rem;
@@ -70,6 +74,7 @@ body{
   height: 6px;
   background-color: #745fb5;
 }
+
 
 .o-nav--links{
   display: flex;
@@ -100,6 +105,15 @@ body{
   width: 100%;
   height: 10px;
   background-color: #745fb5;
+}
+
+.o-home-body .t-sub-title{
+  display: inline-block;
+  color: #745fb5;
+  font-weight: 900;
+  font-size: 2rem;
+  text-transform: uppercase;
+  position: relative;
 }
 
 .o-home-body .t-heading{
