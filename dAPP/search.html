@@ -3,11 +3,13 @@
 <head>
     <title>Neo-Vitae - One place for all your achievements</title>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="https://www.gstatic.com/firebasejs/4.10.1/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
     <link href="static/css/bootstrap.min.css" rel="stylesheet" id="bootstrap.min.css">
     <link href="static/css/vitae.css" rel="stylesheet">
+    <link href="static/css/custom.css" rel="stylesheet">
     <script src="static/js/firebase-config.js"></script>
     <script src="static/js/firebase-requests.js"></script>
     <script src="static/js/browser.js"></script>
@@ -17,16 +19,25 @@
 
 <body>
     <div class="container">
-        <div class="main">
-            <h1>Neo-Vitae</h1>
-            <p class="lead">Blockchain-backed curricula.</p>
-        </div>
-        <form id="search-form" class="form-inline">
-            <div class="form-group mx-sm-3 mb-2">
-                <input type="text" class="form-control" id="walletAddress" placeholder="Wallet Address" required>
+        <div class="main o-home-body--withouth">
+            <div class="row justify-content-xs-center">
+                <div class="col-xs">
+                    <h1 class="t-title">Neo-Vitae</h1>
+                    <p class="t-heading">Blockchain-backed curricula.</p>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary mb-2">Search</button>
-        </form>
+        </div>
+
+        <div class="row">
+            <div class="col-xs col-sm-8">
+            <form id="search-form" class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                    <input type="text" class="form-control" id="walletAddress" placeholder="Wallet Address" required>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Search</button>
+            </form>
+            </div>
+        </div>
 
         <form id="insert-form" class="form-inline">
             <div class="form-group mx-sm-3 mb-2">

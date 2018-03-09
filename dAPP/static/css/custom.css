@@ -88,7 +88,15 @@ body{
   align-items: center;
 }
 
-.o-home-body .t-title{
+.o-home-body--withouth {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.o-home-body .t-title,
+.o-home-body--withouth .t-title{
   display: inline-block;
   color: #ced4da;
   font-weight: 900;
@@ -97,7 +105,8 @@ body{
   position: relative;
 }
 
-.o-home-body .t-title:before{
+.o-home-body .t-title:before,
+.o-home-body--withouth .t-title:before{
   content: '';
   position: absolute;
   opacity: 0.5;
@@ -107,7 +116,8 @@ body{
   background-color: #745fb5;
 }
 
-.o-home-body .t-sub-title{
+.o-home-body .t-sub-title,
+.o-home-body--withouth .t-sub-title{
   display: inline-block;
   color: #745fb5;
   font-weight: 900;
@@ -116,7 +126,8 @@ body{
   position: relative;
 }
 
-.o-home-body .t-heading{
+.o-home-body .t-heading,
+.o-home-body--withouth .t-heading{
   color: #745fb5;
   font-weight: 300;
   font-size: 1.2rem;
