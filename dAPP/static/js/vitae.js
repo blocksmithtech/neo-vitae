@@ -28,7 +28,7 @@ function error(message) {
 
 /*
 * Returns true if a given date is valid and false otherwise.
-* @params {string} date
+* @param {string} date
 * @returns {boolean}
 */
 function isValidDate(date) {
@@ -40,7 +40,7 @@ function isValidDate(date) {
 /*
 * Returns true if a given email matches a regular expression that validates email syntaxe,
 * false otherwise.
-* @params {string} email
+* @param {string} email
 * @returns {boolean}
 */
 function isValidEmail(email) {
@@ -50,7 +50,7 @@ function isValidEmail(email) {
 
 /*
 * Returns true if a given wallet address seems to be valid
-* @params {string} walletAddress
+* @param {string} walletAddress
 * @returns {boolean}
 */
 function isValidWallet(walletAddress) {
@@ -73,14 +73,11 @@ function search() {
     return Client.invokeFunction('0xf30097b13ae7b3d67fe6e63b674e1237c097efe5', 'get', param2).then(function(res) {
         let val = res.stack[0].value;
         let decoded = Neon.u.hexstring2str(val);
+        console.log(decoded);
         //TODO: JSON parsing not working!
         let json = JSON.parse(decoded);
         return getIPFSAddress(json['value']);
     });
-}
-
-function getIPFSAddress(address) {
-    return $.getJSON('https://ipfs.io/ipfs/' + address);
 }
 
 /*
@@ -92,34 +89,6 @@ function successBlock(message) {
     $("#result-val").show();
 }
 
-function storeProfile(walletAddress, firstName, lastName, dateOfBirth, email) {
-    let profilePic = document.getElementById("profile-pic").files[0];
-    if (profilePic === null) {
-        error("A profile picture is mandatory!");
-        return null;
-    }
-    let timestamp = Date.now();
-    let uniqueName = timestamp + "." + profilePic.name;
-
-    // Stores the image in /images folder in firebase storage
-    let storageRef = firebase.storage().ref();
-
-    let storageFolder = storageRef.child('/images/' + uniqueName);
-    try {
-        storageFolder.put(profilePic)
-            .then((snapshot) => {
-                let profilePicDownloadURL = snapshot.downloadURL;
-                writeUserData(walletAddress, firstName, lastName, dateOfBirth, email, profilePicDownloadURL);
-        });
-    } catch(err) {
-        console.error();(err);
-        error("Some error occcurred uploading your picture. Try again later.");
-        return null;
-    }
-    return null;
-
-}
-
 /*
 * This is useful for DEBUG only
 * TODO: Get rid of this before sending to productionv
@@ -128,8 +97,6 @@ function successFirebase(message) {
     $("#firebase-val").html(message);
     $("#result-firebase").show();
 }
-
-
 
 $(document).ready(function() {
     $("#search-form").submit(function(event) {
