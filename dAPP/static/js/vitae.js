@@ -76,7 +76,7 @@ function search() {
         console.log(decoded);
         //TODO: JSON parsing not working!
         let json = JSON.parse(decoded);
-        return getIPFSAddress(json['value']);
+        return fetchIPFSData(json['value']);
     });
 }
 
