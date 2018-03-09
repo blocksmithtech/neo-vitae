@@ -50,6 +50,13 @@ function cleanDebugInfo() {
     $("#result-firebase").hide();
     $("block-val").html("");
     $("#result-val").hide();
+
+    $("#user-profile-pic").attr("src", "");
+    $("#user-name").html("");
+    $("#user-email").html("");
+    $("#user-email").attr("href", "");
+    $("#user-dob").html("");
+    $("#user-info").hide();
 }
 
 /*
@@ -79,7 +86,7 @@ function isValidDate(date) {
 * @returns {boolean}
 */
 function isValidEmail(email) {
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
 
@@ -144,8 +151,9 @@ $(document).ready(function() {
         // Checks if walletAddress is valid
         // TODO: Pretty message on invalid data
         if (isValidWallet(walletAddress)) {
-            search(walletAddress);
+            let certifiers= search(walletAddress);
             readUserData(walletAddress);
+            readCertifierData(certifiers);
         } else {
             error("This is not a valid NEO wallet address");
         }

@@ -1,40 +1,36 @@
-function displayCertifiers(certifierDetails) {
-    let t = $.template(`<dl class="row entry col-sm-8">
-        <dt class="col-sm-3">Certifier/></dt>
-        <dd class="col-sm-9">${name}</dd>
+function displayCertifiers(certifier, certifierData) {
+    let extras = "";
+    for (let j = 0; j < certifier.ipfsData.extra.length; j++) {
+        extras = extras + certifier.ipfsData.extra[j] + "\n";
+    }
 
-        <dt class="col-sm-3">Dates/></dt>
-        <dd class="col-sm-9">From: ${from} To: ${to}</dd>
+    $('#entries').append(
+        `<dl class="row entry col-sm-8">
+            <dt class="col-sm-3"><a href="`+ certifierData.website + `">
+                <img src="`+ certifierData.pictureUrl + `" style="width:42px;height:42px;border:0;">
+                </a>
+            </dt>
+            <dd class="col-sm-9"><b>`+ certifier.ipfsData.certifier + `</b></dd>
 
-        <dt class="col-sm-3">Certification</dt>
-        <dd class="col-sm-9">${certification}</dd>
+            <dt class="col-sm-3">Issued to</dt>
+            <dd class="col-sm-9">` + certifier.ipfsData.name + `</dd>
 
-        <dt class="col-sm-3">Description</dt>
-        <dd class="col-sm-9">${description}</dd>
+            <dt class="col-sm-3">Dates</dt>
+            <dd class="col-sm-9">From: ` + certifier.ipfsData.from + `To: ` + certifier.ipfsData.to + `</dd>
 
-    </dl>`);
-    $(selector).append( t , {
-        name: certifierDetails.name,
-        from: certifierDetails.from,
-        to: certifierDetails.to,
-        certification: certifierDetails.certification
-    });
-}
+            <dt class="col-sm-3">Certification</dt>
+            <dd class="col-sm-9">` + certifier.ipfsData.certification + `}</dd>
 
-{
-  "name": "Afonso Henriques",
-  "certifier": "University of Coimbra",
-  "from": "{optional initial date}",
-  "to": "{required date}",
-  "certification": "Masters Degree in Something",
-  "description": "Longer description here",
-  "extra": [
-    "List of strings with extra information that might be needed",
-    "that are optional"
-  ]
-}
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">` + certifier.ipfsData.description + `</dd>
 
-/*
+            <dt class="col-sm-3">Extras</dt>
+            <dd class="col-sm-9">` + extras + `</dd>
+
+
+        </dl>`
+    );
+}/*
 * Displays search results
 * @params {object} userDetails - An object with the user details
 */
@@ -54,21 +50,22 @@ function displaySearchResults(userDetails) {
 }
 
 /*
-* Reads certifier data from firebase database
-* @param {array} walletAddresses - Addresses to read.
+* Reads certifier data from firebase database and then calls a function to display the data
+* @param certifier - Array of json objects
 * TODO: Error handling
-* TODO: Finish or correct this documentation
 */
-function readUserCertifications(walletAddresses) {
-    let certifierDetails = [];
-    for (i = 0; i < walletAddresses.length; i++) {
+function readCertifierData(certifiers) {
+    for (let i = 0; i < certifiers.length; i++) {
+        let certifier = certifiers[i];
+
         try {
-            firebase.database().ref('/certifiers/' + walletAddresses[i]).once('value').then(function(snapshot) {
-                certifierDetails.push(snapshot.val());
+            firebase.database().ref('/certifiers/' + certifier.institutionAddress).once('value').then(function(snapshot) {
+                let certifierData  = (snapshot.val());
                 // DEBUG
-                successFirebase(JSON.stringify(certifierDetails));
-                // Displays search results
-                displayCertifiers(certifierDetails);
+                successFirebase(JSON.stringify(certifierData));
+                // Displays certificates when results are retrieved
+                displayCertifiers(certifier, certifierData)
+
             });
         } catch(err) {
             console.error(err);
