@@ -16,10 +16,12 @@ from boa.builtins import concat, list, range, substr
 
 # SERIALIZATION METHOS --------------------------------------------------------
 #
-# grabbed from "neo-boa" tests
+# First 3 grabbed from "neo-boa" tests:
+# https://github.com/CityOfZion/neo-boa/blob/master/boa_test/example/demo/SerializationTest2.py
 #
 def deserialize_bytearray(data):
-    # ok this is weird.  if you remove this print statement, it stops working :/
+    # ok this is weird.  if you remove this print statement,
+    # it stops working :/
     # get length of length
     collection_length_length = data[0:1]
     # get length of collection
@@ -81,6 +83,9 @@ def serialize_var_length_item(item):
 
     out = concat(byte_len, stuff_len)
     return out
+#
+# END of neo-boa serialization methods
+#
 
 
 def simple_json_object(key, value):
@@ -122,7 +127,7 @@ def parse_saved_entries(entries):
     return objects
 
 
-# OPERATION FUNCTIONs ---------------------------------------------------------
+# OPERATION FUNCTIONS ---------------------------------------------------------
 
 def get_certs(address):
     """Fetches all certifications for a given address
@@ -165,7 +170,7 @@ def add_certification(address, caller_address, content):
     Log('New certification added.')
     return '[{"success":"New certification added."}]'
 
-# END OF OPERATION FUNCTION ---------------------------------------------------
+# END OF OPERATION FUNCTIONS --------------------------------------------------
 
 
 def Main(operation, args):
@@ -200,6 +205,7 @@ def Main(operation, args):
 
         caller_address = args[1]
 
+        # To make sure the address is from the caller
         if not CheckWitness(caller_address):
             Log('You need to provide your own address')
             return '[{"error": "You need to provide your own address"}]'
