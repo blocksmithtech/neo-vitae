@@ -1,3 +1,39 @@
+function displayCertifiers(certifierDetails) {
+    let t = $.template(`<dl class="row entry col-sm-8">
+        <dt class="col-sm-3">Certifier/></dt>
+        <dd class="col-sm-9">${name}</dd>
+
+        <dt class="col-sm-3">Dates/></dt>
+        <dd class="col-sm-9">From: ${from} To: ${to}</dd>
+
+        <dt class="col-sm-3">Certification</dt>
+        <dd class="col-sm-9">${certification}</dd>
+
+        <dt class="col-sm-3">Description</dt>
+        <dd class="col-sm-9">${description}</dd>
+
+    </dl>`);
+    $(selector).append( t , {
+        name: certifierDetails.name,
+        from: certifierDetails.from,
+        to: certifierDetails.to,
+        certification: certifierDetails.certification
+    });
+}
+
+{
+  "name": "Afonso Henriques",
+  "certifier": "University of Coimbra",
+  "from": "{optional initial date}",
+  "to": "{required date}",
+  "certification": "Masters Degree in Something",
+  "description": "Longer description here",
+  "extra": [
+    "List of strings with extra information that might be needed",
+    "that are optional"
+  ]
+}
+
 /*
 * Displays search results
 * @params {object} userDetails - An object with the user details
@@ -16,6 +52,31 @@ function displaySearchResults(userDetails) {
     $("#user-dob").html(userDoB);
     $("#user-info").show();
 }
+
+/*
+* Reads certifier data from firebase database
+* @param {array} walletAddresses - Addresses to read.
+* TODO: Error handling
+* TODO: Finish or correct this documentation
+*/
+function readUserCertifications(walletAddresses) {
+    let certifierDetails = [];
+    for (i = 0; i < walletAddresses.length; i++) {
+        try {
+            firebase.database().ref('/certifiers/' + walletAddresses[i]).once('value').then(function(snapshot) {
+                certifierDetails.push(snapshot.val());
+                // DEBUG
+                successFirebase(JSON.stringify(certifierDetails));
+                // Displays search results
+                displayCertifiers(certifierDetails);
+            });
+        } catch(err) {
+            console.error(err);
+            error("An error as occurred. Please try again later");
+        }
+    }
+}
+
 
 /*
 * Reads user data from firebase. This allows us to match a wallet address to its owner data.
@@ -77,6 +138,35 @@ function storeProfile(walletAddress, firstName, lastName, dateOfBirth, email) {
     return null;
 }
 
+/*
+* Writes a certifier data to firebase database.
+* @param {string} walletAddress - Certifier official wallet address.
+* @param {string} name - Certifier official name
+* @param {string} website - Certifier official website
+* @param {string} city - Certifier address: city
+* @param {string} country - Certifier address: country
+* @param {string} pictureUrl - Certifier official image URL
+* TODO: Success message on frontend
+* TODO: Error handling
+*/
+function writeCertifierData(walletAddress, type, name, website, city, country, pictureUrl) {
+    try {
+        firebase.database().ref('certifiers/' + walletAddress).set({
+            type: type,
+            name: name,
+            website: website,
+            city: city,
+            country: country,
+            pictureUrl: pictureUrl
+        });
+        // DEBUG
+        successFirebase("Your data was saved successfully");
+    } catch(err) {
+        console.error("An error occurred: " + err);
+        error("It was not possible to save your data at this time. Please try again later");
+    }
+
+}
 
 /*
 * Writes the user data in firebase database.
