@@ -9,10 +9,16 @@ const IPFS_PROXY_URL = "https://ipfs.io/ipfs/";
 
 /*
 * Requests to a given proxy the file containing the JSON data of a given hash.
+* @param {string} institutionAddress
 * @param {string} Hash
 * @returns {Promise} A promise that returns the JSON data when resolved and
 * and rejects in case there is connection problem the data is in a bad format.
 */
-function fetchIPFSData(hash){
-    return $.getJSON(IPFS_PROXY_URL + hash);
+function fetchIPFSData(institutionAddress, hash) {
+    return $.getJSON(IPFS_PROXY_URL + hash).then(function(result) {
+        return {
+            institutionAddress: institutionAddress,
+            ipfsData: result
+        }
+    });
 }

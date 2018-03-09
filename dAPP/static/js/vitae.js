@@ -4,41 +4,6 @@ const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/'
 const SCRIPT_HASH = "0x3e1c2c68382523cdcce6fee32a33c017c0d8e2c0";
 const OPERATION = "get";
 
-
-
-const fakeData = [
-    {
-        institutionAddress: "havard1234",
-        ipfsData: {
-        "name": "Afonso Henriques",
-        "certifier": "University of Coimbra",
-        "from": "{optional initial date}",
-        "to": "{required date}",
-        "certification": "Masters Degree in Something",
-        "description": "Longer description here",
-        "extra": [
-            "List of strings with extra information that might be needed",
-            "that are optional"
-        ]
-        }
-    },
-    {
-        institutionAddress: "mit1234",
-        ipfsData: {
-        "name": "Afonso Henriques",
-        "certifier": "University of Coimbra",
-        "from": "{optional initial date}",
-        "to": "{required date}",
-        "certification": "Masters Degree in Something",
-        "description": "Longer description here",
-        "extra": [
-            "List of strings with extra information that might be needed",
-            "that are optional"
-        ]
-        }
-    },
-];
-
 /*
 * This is useful for DEBUG only
 * TODO: Get rid of this before sending to production
@@ -110,17 +75,24 @@ function isValidWallet(walletAddress) {
 * TODO: handle the case where nothing is found for a given address.
 */
 function search() {
-    return fakeData;
     let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
     let param2 = new Neon.sc.ContractParam.byteArray('AYkNyJrFnVkGpWixxGpPDQekzj4R9U3Zmz', 'address');
     return Client.invokeFunction('0xf30097b13ae7b3d67fe6e63b674e1237c097efe5', 'get', param2).then(function(res) {
+        let promises = [];
         let val = res.stack[0].value;
         let decoded = Neon.u.hexstring2str(val);
         console.log(decoded);
-        //TODO: JSON parsing not working!
-        let json = JSON.parse(decoded);
-        let fake = [{"havard1234": "Qmej4uK8sZUy7BWSxq2FtxFY8qUSh2VDeXEq8aXhLnYEzN"}, {"mit1234": "QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA"}];
-        return fetchIPFSData(json['value']);
+        //TODO: JSON parsing not working! Using a fake JSON for now. Once it is working, uncomment line 114 and remove 115
+        //let json = JSON.parse(decoded);
+        let json = [{"havard1234": "Qmej4uK8sZUy7BWSxq2FtxFY8qUSh2VDeXEq8aXhLnYEzN"}, {"mit1234": "QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA"}];
+        json.forEach(function(obj) {
+            let key = Object.keys(obj)[0];
+            let val = obj[key];
+            promises.push(fetchIPFSData(key, val));
+        });
+        return Promise.all(promises);
+    }).then(function(res) {
+        console.log(res);
     });
 }
 
