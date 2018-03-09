@@ -96,15 +96,6 @@ function search() {
 
 /*
 * This is useful for DEBUG only
-* TODO: Get rid of this before sending to production
-*/
-function successBlock(message) {
-    $("block-val").html(message);
-    $("#result-val").show();
-}
-
-/*
-* This is useful for DEBUG only
 * TODO: Get rid of this before sending to productionv
 */
 function successFirebase(message) {

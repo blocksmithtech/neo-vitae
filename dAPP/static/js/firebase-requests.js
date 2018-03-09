@@ -41,6 +41,7 @@ function displaySearchResults(userDetails) {
     let mailto = "mailto:".concat(userEmail);
     let userDoB = userDetails.dateOfBirth;
     let userProfilePic = userDetails.profilePic;
+    $("#user-profile-pic").attr("style", "width:250px;height:250px;border:0;")
     $("#user-profile-pic").attr("src", userProfilePic);
     $("#user-name").html(userName);
     $("#user-email").html(userEmail);
@@ -55,14 +56,15 @@ function displaySearchResults(userDetails) {
 * TODO: Error handling
 */
 function readCertifierData(certifiers) {
-    for (let i = 0; i < certifiers.length; i++) {
+    let i = 0;
+    for (i = 0; i < certifiers.length; i++) {
         let certifier = certifiers[i];
 
         try {
             firebase.database().ref('/certifiers/' + certifier.institutionAddress).once('value').then(function(snapshot) {
                 let certifierData  = (snapshot.val());
                 // DEBUG
-                successFirebase(JSON.stringify(certifierData));
+                //successFirebase(JSON.stringify(certifierData));
                 // Displays certificates when results are retrieved
                 displayCertifiers(certifier, certifierData)
 
@@ -72,6 +74,7 @@ function readCertifierData(certifiers) {
             error("An error as occurred. Please try again later");
         }
     }
+    $("#entries-found").html(i.toString() + " entries found")
 }
 
 
@@ -86,7 +89,7 @@ function readUserData(walletAddress) {
         firebase.database().ref('/users/' + walletAddress).once('value').then(function(snapshot) {
             userDetails = snapshot.val();
             // DEBUG
-            successFirebase(JSON.stringify(userDetails));
+            //successFirebase(JSON.stringify(userDetails));
             // Displays search results
             displaySearchResults(userDetails);
         });
