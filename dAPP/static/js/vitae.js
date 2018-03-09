@@ -123,9 +123,10 @@ $(document).ready(function() {
         // Checks if walletAddress is valid
         // TODO: Pretty message on invalid data
         if (isValidWallet(walletAddress)) {
-            let certifiers= search(walletAddress);
             readUserData(walletAddress);
-            readCertifierData(certifiers);
+            search(walletAddress).then(function(certifiers) {
+                readCertifierData(certifiers)
+            });
         } else {
             error("This is not a valid NEO wallet address");
         }
