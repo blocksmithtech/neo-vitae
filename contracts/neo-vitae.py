@@ -10,8 +10,7 @@ something in a permanent way.
 from boa.interop.Neo.Runtime import Log, Notify
 from boa.interop.Neo.Runtime import CheckWitness
 from boa.interop.Neo.Storage import GetContext, Get, Put
-from boa.interop.System.ExecutionEngine import GetCallingScriptHash
-from boa.builtins import concat, list, range, substr
+from boa.builtins import concat, list, range
 
 
 # SERIALIZATION METHOS --------------------------------------------------------
@@ -88,43 +87,18 @@ def serialize_var_length_item(item):
 #
 
 
-def simple_json_object(key, value):
-    """Join 2 strings in a JSON object string"""
-    content = '{'
-    obj_key = concat('"', concat(key, '"'))
-    obj_value = concat('"', concat(value, '"'))
-    delimiter = concat(obj_key, ':')
-    content = concat(content, concat(delimiter, obj_value))
-    return concat(content, '}')
-
-
-def json_array(items):
+def add_delimiter(items):
     """ Concats a list of strings as an JSON array"""
-    content = '['
+    content = ''
     size = len(items)
 
     for item in range(0, size):
-        content = concat(content, items[item])
-        if item != size - 1:
-            content = concat(content, ',')
+        new_item = concat(items[item], '***')
+        content = concat(content, new_item)
 
-    return concat(content, ']')
+    return content
 #
 # END OF SERIALIZATION METHODS ------------------------------------------------
-
-
-def parse_saved_entries(entries):
-    """Transform a list of strings in a list of key-value JSON objects
-
-    Separates the Key (address) part from the value (IPFS hash) and adds that
-    as object string.
-    """
-    objects = []
-    for entry in entries:
-        sender_address = substr(entry, 0, 20)
-        content = substr(entry, 20, len(entry) - 20)
-        objects.append(simple_json_object(sender_address, content))
-    return objects
 
 
 # OPERATION FUNCTIONS ---------------------------------------------------------
@@ -138,12 +112,11 @@ def get_certs(address):
     current_data = Get(ctx, address)
     if current_data:
         entries = deserialize_bytearray(current_data)
-        objects = parse_saved_entries(entries)
-        final = json_array(objects)
-        Notify(final)
+        final = add_delimiter(entries)
+        Notify('Found items, returning them')
     else:
         Notify('No certifications found for this address')
-        final = '[{"error": "No certifications found for this address"}]'
+        final = 'Error: No certifications found for this address'
     return final
 
 
@@ -168,7 +141,7 @@ def add_certification(address, caller_address, content):
     final_data = serialize_array(new_data)
     Put(ctx, address, final_data)
     Log('New certification added.')
-    return '[{"success":"New certification added."}]'
+    return 'Success: New certification added'
 
 # END OF OPERATION FUNCTIONS --------------------------------------------------
 
@@ -184,34 +157,33 @@ def Main(operation, args):
 
     if len(args) == 0:
         Log('You need to provide at least 1 parameter - [address]')
-        return '[{"error": "You need to provide at least 1 parameter - [address]"}]'
+        return 'Error: You need to provide at least 1 parameter - [address]'
 
     address = args[0]
 
     if len(address) != 20:
         Log('Wrong address size')
-        return '[{"error": "Wrong address size"}]'
+        return 'Error: Wrong address size'
 
     if operation == 'get':
         return get_certs(address)
     elif operation == 'certify':
         # Caller cannot add certifications to his address
         if CheckWitness(address):
-            Log('You cannot add certitications for yourself')
-            return '[{"error": "You cannot add certitications for yourself"}]'
+            Log('You cannot add certifications for yourself')
+            return 'Error: You cannot add certifications for yourself'
         if 3 != len(args):
-            Log('To certify 3 parameters are needed - [address] [caller_address] [hash]')
-            return '[{"error": "To certify 3 parameters are needed - [address] [caller_address] [hash]"}]'
+            Log('Certify requires 3 parameters - [address] [caller_address] [hash]')
+            return 'Error: Certify requires 3 parameters - [address] [caller_address] [hash]'
 
         caller_address = args[1]
-
         # To make sure the address is from the caller
         if not CheckWitness(caller_address):
             Log('You need to provide your own address')
-            return '[{"error": "You need to provide your own address"}]'
+            return 'Error: You need to provide your own address'
 
         content = args[2]
         return add_certification(address, caller_address, content)
     else:
         Log('Invalid Operation')
-        return '[{"error": "Invalid Operation"}]'
+        return 'Error": "Invalid Operation'
