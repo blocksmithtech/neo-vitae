@@ -81,9 +81,10 @@ function buildJson(keyValPairsStr) {
     keyValPairs.forEach(function(keyVal) {
         let key = keyVal.substring(0, 20);
         let value = keyVal.substring(20);
-        console.log(key, value);
         let address = decodeAddress(key);
-        pairsArray.push({address: address, value: value})
+        if(key.length == 20 && value.length > 0) {
+            pairsArray.push({address: address, value: value})
+        }
     });
     return pairsArray;
 }
@@ -94,17 +95,18 @@ function buildJson(keyValPairsStr) {
 * Returns an string representing the JSON data.
 * TODO: handle the case where nothing is found for a given address.
 */
-function search() {
+function search(walletAddress) {
     let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
-    let param2 = new Neon.sc.ContractParam.byteArray('AYkNyJrFnVkGpWixxGpPDQekzj4R9U3Zmz', 'address');
-    return Client.invokeFunction('0xf30097b13ae7b3d67fe6e63b674e1237c097efe5', 'get', param2).then(function(res) {
+    let param2 = new Neon.sc.ContractParam.byteArray(walletAddress, 'address');
+    return Client.invokeFunction('0x0ab6f029bf0bf748e429a158baa0e78d426d24b3', 'get', param2).then(function(res) {
         let promises = [];
         let val = res.stack[0].value;
         let decoded = Neon.u.hexstring2str(val);
-        decoded = '12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA***12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA';
+        //decoded = '12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA***12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA';
         console.log(decoded);
         //let json = JSON.parse(decoded);
         let json = buildJson(decoded);
+        console.log(json);
         json.forEach(function(obj) {
             promises.push(fetchIPFSData(obj.address, obj.value));
         });
@@ -123,6 +125,7 @@ function successFirebase(message) {
 
 $(document).ready(function() {
     $("#search-form").submit(function(event) {
+        event.preventDefault();
         // This cleans DEBUG info. TODO: Remove this when no longer needed
         cleanDebugInfo();
         // Gets walletAddress
