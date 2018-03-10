@@ -1,7 +1,7 @@
 const REQUEST_URL_PRIVNET = "http://95.172.164.173:30333/";
 const REQUEST_URL_TESTNET = 'http://seed3.neo.org:10332/';
-const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/'
-const SCRIPT_HASH = "0x3e1c2c68382523cdcce6fee32a33c017c0d8e2c0";
+const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/';
+const SCRIPT_HASH = "0x0ab6f029bf0bf748e429a158baa0e78d426d24b3";
 const OPERATION = "get";
 
 /*
