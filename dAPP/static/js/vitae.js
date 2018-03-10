@@ -131,7 +131,7 @@ $(document).ready(function() {
         // Checks if walletAddress is valid
         // TODO: Pretty message on invalid data
         if (isValidWallet(walletAddress)) {
-            //readUserData(walletAddress);
+            readUserData(walletAddress);
             search(walletAddress).then(function(certifiers) {
                 readCertifierData(certifiers);
             });

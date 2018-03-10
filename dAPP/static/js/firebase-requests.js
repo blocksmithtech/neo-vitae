@@ -91,13 +91,11 @@ function readUserData(walletAddress) {
     let userDetails;
     try {
         firebase.database().ref('/users/' + walletAddress).once('value').then(function(snapshot) {
-            console.log(snapshot);
             userDetails = snapshot.val();
-            console.log(userDetails);
-            // DEBUG
-            //successFirebase(JSON.stringify(userDetails));
             // Displays search results
-            displaySearchResults(userDetails);
+            if(userDetails) {
+                displaySearchResults(userDetails);
+            }
         });
     } catch(err) {
         console.error(err);
