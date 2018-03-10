@@ -68,6 +68,26 @@ function isValidWallet(walletAddress) {
     return true;
 }
 
+function decodeAddress(addr) {
+    addr = Neon.u.str2hexstring(addr);
+    addr = Neon.u.reverseHex(addr);
+    return Neon.wallet.getAddressFromScriptHash(addr);
+}
+
+function buildJson(keyValPairsStr) {
+    //Step 1
+    let pairsArray = [];
+    let keyValPairs = keyValPairsStr.split('***');
+    keyValPairs.forEach(function(keyVal) {
+        let key = keyVal.substring(0, 20);
+        let value = keyVal.substring(20);
+        console.log(key, value);
+        let address = decodeAddress(key);
+        pairsArray.push({address: address, value: value})
+    });
+    return pairsArray;
+}
+
 /*
 *
 * Searches for an entry to a given wallet Hash into the Neo-Vitae blockchain data.
@@ -81,14 +101,12 @@ function search() {
         let promises = [];
         let val = res.stack[0].value;
         let decoded = Neon.u.hexstring2str(val);
+        decoded = '12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA***12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA';
         console.log(decoded);
-        //TODO: JSON parsing not working! Using a fake JSON for now. Once it is working, uncomment line 114 and remove 115
         //let json = JSON.parse(decoded);
-        let json = [{"havard1234": "Qmej4uK8sZUy7BWSxq2FtxFY8qUSh2VDeXEq8aXhLnYEzN"}, {"mit1234": "QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA"}];
+        let json = buildJson(decoded);
         json.forEach(function(obj) {
-            let key = Object.keys(obj)[0];
-            let val = obj[key];
-            promises.push(fetchIPFSData(key, val));
+            promises.push(fetchIPFSData(obj.address, obj.value));
         });
         return Promise.all(promises);
     });
