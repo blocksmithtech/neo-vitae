@@ -3,10 +3,6 @@
     text-align: center;
 }
 
-#search-form {
-    justify-content: center;
-}
-
 #result, #result-block, #result-firebase, #error {
     display: none;
 }
