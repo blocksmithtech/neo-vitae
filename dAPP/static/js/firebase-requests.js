@@ -4,6 +4,11 @@ function displayCertifiers(certifier, certifierData) {
         extras = extras + certifier.ipfsData.extra[j] + "\n";
     }
 
+    certifierData = certifierData || {
+        website: '',
+        pictureUrl: '',
+    }
+
     $('#entries').append(
         `<dl class="row entry col-sm-8">
             <dt class="col-sm-3"><a href="`+ certifierData.website + `">
@@ -59,7 +64,6 @@ function readCertifierData(certifiers) {
     let i = 0;
     for (i = 0; i < certifiers.length; i++) {
         let certifier = certifiers[i];
-
         try {
             firebase.database().ref('/certifiers/' + certifier.institutionAddress).once('value').then(function(snapshot) {
                 let certifierData  = (snapshot.val());
@@ -87,7 +91,9 @@ function readUserData(walletAddress) {
     let userDetails;
     try {
         firebase.database().ref('/users/' + walletAddress).once('value').then(function(snapshot) {
+            console.log(snapshot);
             userDetails = snapshot.val();
+            console.log(userDetails);
             // DEBUG
             //successFirebase(JSON.stringify(userDetails));
             // Displays search results

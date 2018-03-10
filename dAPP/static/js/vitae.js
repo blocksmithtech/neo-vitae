@@ -103,10 +103,8 @@ function search(walletAddress) {
         let val = res.stack[0].value;
         let decoded = Neon.u.hexstring2str(val);
         //decoded = '12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA***12345678901234567890QmXoJLgLFMMq5LCCC9q3mnYjSjnhHYxnoJahK6EMEGuCqA';
-        console.log(decoded);
         //let json = JSON.parse(decoded);
         let json = buildJson(decoded);
-        console.log(json);
         json.forEach(function(obj) {
             promises.push(fetchIPFSData(obj.address, obj.value));
         });
@@ -133,9 +131,9 @@ $(document).ready(function() {
         // Checks if walletAddress is valid
         // TODO: Pretty message on invalid data
         if (isValidWallet(walletAddress)) {
-            readUserData(walletAddress);
+            //readUserData(walletAddress);
             search(walletAddress).then(function(certifiers) {
-                readCertifierData(certifiers)
+                readCertifierData(certifiers);
             });
         } else {
             error("This is not a valid NEO wallet address");
