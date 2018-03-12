@@ -1,7 +1,7 @@
 const REQUEST_URL_PRIVNET = "http://95.172.164.173:30333/";
-const REQUEST_URL_TESTNET = 'http://seed3.neo.org:10332/';
+const REQUEST_URL_TESTNET = 'https://seed1.neo.org:20331';
 const IPFS_URL_ENDPOINT = 'https://ipfs.io/ipfs/';
-const SCRIPT_HASH = "0x0ab6f029bf0bf748e429a158baa0e78d426d24b3";
+const CONTRACT_HASH = "0x0ab6f029bf0bf748e429a158baa0e78d426d24b3";
 const OPERATION = "get";
 
 /*
@@ -96,9 +96,9 @@ function buildJson(keyValPairsStr) {
 * TODO: handle the case where nothing is found for a given address.
 */
 function search(walletAddress) {
-    let Client = new Neon.rpc.RPCClient(REQUEST_URL_PRIVNET, '2.3.3');
+    let Client = new Neon.rpc.RPCClient(REQUEST_URL_TESTNET, '2.3.3');
     let param2 = new Neon.sc.ContractParam.byteArray(walletAddress, 'address');
-    return Client.invokeFunction('0x0ab6f029bf0bf748e429a158baa0e78d426d24b3', 'get', param2).then(function(res) {
+    return Client.invokeFunction(CONTRACT_HASH, 'get', param2).then(function(res) {
         let promises = [];
         let val = res.stack[0].value;
         let decoded = Neon.u.hexstring2str(val);
