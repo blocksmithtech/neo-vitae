@@ -45,6 +45,9 @@
             <form id="search-form">
                 <div class="form-group mx-sm-3 mb-2">
                     <input type="text" class="form-control" id="walletAddress" placeholder="Wallet Address" required>
+                    <div id="error">
+                        <p><span id="message"></span></p>
+                    </div>
                 </div>
                 <button type="submit" class="c-button mt-3">Search</button>
 
@@ -52,7 +55,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="center">
             <!-- THIS IS FOR DEBUG ONLY. WE SHOULD CLEAN THIS WHEN WE CAN -->
             <div id="result-block">
                 <p>Result-block: <span id="block-val"></span></p>

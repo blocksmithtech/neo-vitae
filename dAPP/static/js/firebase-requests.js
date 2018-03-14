@@ -1,3 +1,8 @@
+/*
+* Displays certifier results
+* @params {object} certifier - An object with certifier data from ipfs
+* @params {object} certifierData - An object with certifier data from firebase
+*/
 function displayCertifiers(certifier, certifierData) {
     let extras = "";
     for (let j = 0; j < certifier.ipfsData.extra.length; j++) {
@@ -35,7 +40,9 @@ function displayCertifiers(certifier, certifierData) {
 
         </dl>`
     );
-}/*
+}
+
+/*
 * Displays search results
 * @params {object} userDetails - An object with the user details
 */

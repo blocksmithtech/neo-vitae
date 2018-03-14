@@ -18,6 +18,11 @@
     border-radius: 5px;
 }
 
+#message {
+    color: red;
+    font-size: 12px;
+}
+
 #user-info {
     margin-top: 30px;
     text-align: center;

@@ -154,7 +154,7 @@ p{
   letter-spacing: 1px;
   color: #1E2022;
   padding: 10px 20px;
-  border: 6px solid #E3E8EC; 
+  border: 6px solid #E3E8EC;
   border-left-color: #745fb5;
 }
 
@@ -180,6 +180,11 @@ p{
   letter-spacing: 0.5px;
 }
 
-.o-footer a{ 
+.o-footer a{
   color: #745fb5;
+}
+
+.u-div-center{
+    margin: auto;
+    width: 80%;
 }
